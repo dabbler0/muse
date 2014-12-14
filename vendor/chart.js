@@ -305,7 +305,7 @@
 			return valueToCap;
 		},
 		getDecimalPlaces = helpers.getDecimalPlaces = function(num){
-			if (num%1!==0 && isNumber(num)){
+			if (num%1!==0 && isNumber(num) && num.toString().indexOf('.') >= 0){
 				return num.toString().split(".")[1].length;
 			}
 			else {
