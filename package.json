@@ -30,6 +30,7 @@
   "homepage": "https://github.com/dabbler0/muse",
   "dependencies": {
     "gulp-ignore": "^1.2.1",
+    "numeric": "^1.2.6",
     "tab64": "0.0.1",
     "wav": "^0.1.2"
   }
