@@ -66,7 +66,8 @@ class Inspector
       ]
     }, {
       animation: false
-      showScale: false
+      scaleShowLabels: true
+      scaleIntegersOnly: true
     })
 
     # Init fft and semitone filterbank
@@ -156,6 +157,17 @@ class Inspector
       @chart.datasets[0].bars[i].value = powers[i]
     @chart.update()
 
+  # Display live capture audio
+  displayLive: (frame) ->
+    # Apply the forward filterbank
+    @fft.forward frame
+    powers = @filterbank.apply @fft.spectrum
+
+    # Put it in the chart
+    for bar, i in @chart.datasets[0].bars
+      @chart.datasets[0].bars[i].value = powers[i]
+    @chart.update()
+
   inspect: (file, setter) ->
     @setter = setter
     readWav file, (@data) =>
@@ -192,6 +204,11 @@ readWav = (file, cb) ->
 
 inspector = new Inspector $('#inspector-frame')
 
+INSPECTING_LIVE = false
+capture.listen (event) ->
+  if INSPECTING_LIVE
+    inspector.displayLive event.inputBuffer.getChannelData 0
+
 # Track list
 do ->
   files = fs.readdirSync 'data'
@@ -200,3 +217,6 @@ do ->
     wrapper.append $('<div>').text(file).click ->
       inspector.inspect 'data/' + file, (chords) ->
         fs.writeFile 'data/' + file + '.chords', JSON.stringify chords, null, 2
+
+  wrapper.append $('<button class="btn-primary">').text('Live').click ->
+    INSPECTING_LIVE = true

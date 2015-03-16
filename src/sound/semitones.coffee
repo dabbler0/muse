@@ -20,5 +20,5 @@ exports.SemitoneFilterbank = class SemitoneFilterbank extends Filterbank
     for frequency in [1...@framesize]
       tonality = semitonality frequency * @samplerate / (@framesize + 1)
 
-      @vectors[floor(tonality) %% 12][frequency] = (1 - abs tonality - floor tonality) / log frequency + 1
-      @vectors[ceil(tonality) %% 12][frequency] = (1 - abs tonality - ceil tonality) / log frequency + 1
+      @vectors[floor(tonality) %% 12][frequency] = (1 - abs tonality - floor tonality)
+      @vectors[ceil(tonality) %% 12][frequency] = (1 - abs tonality - ceil tonality)
